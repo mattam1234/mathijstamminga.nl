@@ -9,7 +9,7 @@ const Home = () => {
         Visit the <Link href="/about">About</Link> page.
       </p>
       <p>
-        Visit the <Link href="/services">services</Link> page.
+        Visit the <Link href="/Services">services</Link> page.
       </p>
     </div>
   )
