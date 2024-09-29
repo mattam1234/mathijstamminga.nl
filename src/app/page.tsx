@@ -5,9 +5,9 @@ export default function Home() {
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <div>
-          <h2>My First </h2>
+          <h2 className="border-b mb-2">My First </h2>
         <Image
-          className="dark:invert"
+          className="dark:invert pb-2 border-black border-b mb "
           src="https://nextjs.org/icons/next.svg"
           alt="Next.js logo"
           width={180}
@@ -44,12 +44,12 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
+            src="https://nextjs.org/icons/linked-in.svg"
+            alt="Linked-in"
             width={16}
             height={16}
           />
-          Learn
+          About me
         </a>
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
@@ -59,27 +59,12 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src="https://nextjs.org/icons/window.svg"
+            src="https://nextjs.org/icons/github.svg"
             alt="Window icon"
             width={16}
             height={16}
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
+          GitHub
         </a>
       </footer>
     </div>
