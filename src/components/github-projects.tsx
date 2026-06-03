@@ -18,9 +18,11 @@ type GitHubRepo = {
   updated_at: string;
 };
 
-const GITHUB_USERNAME = "mattam1234";
+const GITHUB_USERNAME = process.env.NEXT_PUBLIC_GITHUB_USERNAME ?? "mattam1234";
 const GITHUB_REPOS_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`;
 const EXCLUDED_REPOS = new Set(["mattam1234", "mathijstamminga.nl"]);
+const CACHE_KEY = `github-projects:${GITHUB_USERNAME}`;
+const CACHE_TTL_IN_MS = 1000 * 60 * 30;
 
 function formatDisplayDate(dateString: string) {
   return new Intl.DateTimeFormat("en", {
@@ -69,6 +71,21 @@ export function GithubProjects() {
 
     async function loadRepos() {
       try {
+        const cachedRepos = window.localStorage.getItem(CACHE_KEY);
+
+        if (cachedRepos) {
+          const parsedCache = JSON.parse(cachedRepos) as {
+            expiresAt: number;
+            repos: GitHubRepo[];
+          };
+
+          if (parsedCache.expiresAt > Date.now()) {
+            setRepos(parsedCache.repos);
+            setStatus("ready");
+            return;
+          }
+        }
+
         const response = await fetch(GITHUB_REPOS_URL, {
           headers: {
             Accept: "application/vnd.github+json",
@@ -81,7 +98,17 @@ export function GithubProjects() {
         }
 
         const data = (await response.json()) as GitHubRepo[];
-        setRepos(getTopProjects(data));
+        const topProjects = getTopProjects(data);
+
+        window.localStorage.setItem(
+          CACHE_KEY,
+          JSON.stringify({
+            expiresAt: Date.now() + CACHE_TTL_IN_MS,
+            repos: topProjects,
+          }),
+        );
+
+        setRepos(topProjects);
         setStatus("ready");
       } catch (error) {
         if (controller.signal.aborted) {
@@ -185,7 +212,7 @@ export function GithubProjects() {
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {repos.map((repo) => {
-          const tags = [repo.language, ...repo.topics].filter(Boolean).slice(0, 3);
+          const tags = [repo.language].filter(Boolean).concat(repo.topics).slice(0, 3);
 
           return (
             <a
@@ -229,8 +256,12 @@ export function GithubProjects() {
               </div>
 
               <div className="mt-6 flex items-center justify-between text-sm text-slate-400">
-                <span>★ {repo.stargazers_count}</span>
-                <span>⑂ {repo.forks_count}</span>
+                <span aria-label={`${repo.stargazers_count} stars`}>
+                  ★ {repo.stargazers_count}
+                </span>
+                <span aria-label={`${repo.forks_count} forks`}>
+                  ⑂ {repo.forks_count}
+                </span>
                 <span className="text-cyan-300 transition group-hover:text-cyan-200">
                   Open link →
                 </span>
