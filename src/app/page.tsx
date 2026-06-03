@@ -1,120 +1,111 @@
-const activeProjects = [
-  {
-    name: "OpenFrame",
-    description:
-      "A modular ESP32 platform for connecting sensors, displays, and automations through a browser-based control panel.",
-    href: "https://github.com/mattam1234/openframe",
-    stack: ["ESP32", "PlatformIO", "Vue 3"],
-  },
-  {
-    name: "GAPI",
-    description:
-      "A multi-platform game picker that helps decide what to play across Steam, Epic Games, and GOG libraries.",
-    href: "https://github.com/mattam1234/GAPI",
-    stack: ["Python", "Web app", "Gaming APIs"],
-  },
-  {
-    name: "Smack",
-    description:
-      "A Jellyfin plugin for browsing and streaming media from remote Jellyfin servers through one local instance.",
-    href: "https://github.com/mattam1234/Smack",
-    stack: [".NET 9", "C#", "Jellyfin"],
-  },
-  {
-    name: "Urenregistratie Systeem",
-    description:
-      "A Laravel-based time registration and project management system for tracking work, tasks, and leave requests.",
-    href: "https://github.com/mattam1234/urenregistratie-systeem",
-    stack: ["Laravel", "PHP", "MySQL"],
-  },
-];
+import { GithubProjects } from "@/components/github-projects";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100">
-      <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-16 px-6 py-16 sm:px-10 lg:px-12">
-        <section className="flex flex-col gap-6 border-b border-slate-800 pb-12">
-          <p className="text-sm uppercase tracking-[0.3em] text-sky-400">
-            Mathijs Stamminga
-          </p>
-          <div className="max-w-3xl space-y-4">
-            <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-6xl">
-              Building practical software, connected hardware, and tools that
-              are actually fun to use.
-            </h1>
-            <p className="text-lg leading-8 text-slate-300">
-              I am a software developer focused on robust applications, cloud
-              solutions, and side projects that solve real problems. These are
-              the projects I am actively working on right now.
+    <main className="min-h-screen overflow-hidden bg-slate-950 text-slate-100">
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,_rgba(34,211,238,0.18),_transparent_30%),radial-gradient(circle_at_top_right,_rgba(168,85,247,0.2),_transparent_30%),linear-gradient(180deg,_#020617_0%,_#020617_45%,_#0f172a_100%)]" />
+      <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-20 px-6 py-16 sm:px-10 lg:px-12">
+        <section className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-end">
+          <div className="flex flex-col gap-6">
+            <p className="text-sm uppercase tracking-[0.35em] text-cyan-300">
+              Mathijs Stamminga
             </p>
-          </div>
-          <div className="flex flex-wrap gap-4">
-            <a
-              className="rounded-full bg-sky-400 px-5 py-3 text-sm font-medium text-slate-950 transition hover:bg-sky-300"
-              href="https://github.com/mattam1234"
-              target="_blank"
-              rel="noreferrer"
-            >
-              View GitHub
-            </a>
-            <a
-              className="rounded-full border border-slate-700 px-5 py-3 text-sm font-medium text-slate-100 transition hover:border-slate-500 hover:bg-slate-900"
-              href="https://www.linkedin.com/in/mathijs-stamminga/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Connect on LinkedIn
-            </a>
-          </div>
-        </section>
-
-        <section className="flex flex-col gap-8">
-          <div className="max-w-2xl space-y-3">
-            <h2 className="text-2xl font-semibold text-white sm:text-3xl">
-              Active projects
-            </h2>
-            <p className="text-base leading-7 text-slate-300">
-              A selection of the products and experiments currently getting most
-              of my attention.
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2">
-            {activeProjects.map((project) => (
+            <div className="max-w-4xl space-y-5">
+              <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl">
+                A personal site that stays in sync with what I’m building in
+                public.
+              </h1>
+              <p className="max-w-3xl text-lg leading-8 text-slate-300 sm:text-xl">
+                Software developer focused on robust applications, cloud
+                solutions, and side projects that mix practical engineering with
+                a bit of fun. The projects below update dynamically from public
+                GitHub repositories and every card uses a real link.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-4">
               <a
-                key={project.name}
-                className="group rounded-3xl border border-slate-800 bg-slate-900/70 p-6 transition hover:-translate-y-1 hover:border-sky-400/50 hover:bg-slate-900"
-                href={project.href}
+                className="rounded-full bg-white px-5 py-3 text-sm font-medium text-slate-950 transition hover:bg-slate-200"
+                href="https://github.com/mattam1234"
                 target="_blank"
                 rel="noreferrer"
               >
-                <div className="flex h-full flex-col gap-5">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between gap-4">
-                      <h3 className="text-xl font-semibold text-white">
-                        {project.name}
-                      </h3>
-                      <span className="text-sm text-sky-400 transition group-hover:text-sky-300">
-                        Open →
-                      </span>
-                    </div>
-                    <p className="leading-7 text-slate-300">
-                      {project.description}
-                    </p>
-                  </div>
-                  <div className="mt-auto flex flex-wrap gap-2">
-                    {project.stack.map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-full border border-slate-700 px-3 py-1 text-xs text-slate-200"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                View GitHub profile
               </a>
-            ))}
+              <a
+                className="rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:border-white/30 hover:bg-white/10"
+                href="https://www.linkedin.com/in/mathijs-stamminga/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Connect on LinkedIn
+              </a>
+            </div>
+          </div>
+
+          <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur">
+            <p className="text-sm uppercase tracking-[0.25em] text-cyan-300">
+              Current focus
+            </p>
+            <div className="mt-6 space-y-5">
+              <div>
+                <p className="text-sm text-slate-400">What this page shows</p>
+                <p className="mt-2 text-lg font-medium text-white">
+                  Recently active public repositories from GitHub.
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-slate-400">How it updates</p>
+                <p className="mt-2 text-sm leading-7 text-slate-300">
+                  The project feed is loaded in the browser from the public
+                  GitHub API, so the site stays current without manually editing
+                  the list every time something changes.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="space-y-8">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm uppercase tracking-[0.3em] text-cyan-300">
+                Active projects
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">
+                Public work, automatically surfaced.
+              </h2>
+            </div>
+            <p className="max-w-2xl text-sm leading-7 text-slate-300">
+              Cards are ranked by recent activity and filtered to public,
+              non-archived, non-fork repositories.
+            </p>
+          </div>
+
+          <GithubProjects />
+        </section>
+
+        <section className="rounded-[2rem] border border-white/10 bg-white/5 p-8 backdrop-blur">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="text-sm uppercase tracking-[0.25em] text-cyan-300">
+                Let&apos;s connect
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold text-white">
+                Want the full picture?
+              </h2>
+              <p className="mt-3 text-base leading-7 text-slate-300">
+                Explore the full public repository list, follow ongoing work, or
+                reach out through LinkedIn.
+              </p>
+            </div>
+            <a
+              className="rounded-full bg-cyan-300 px-5 py-3 text-sm font-medium text-slate-950 transition hover:bg-cyan-200"
+              href="https://github.com/mattam1234?tab=repositories"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Browse all repositories
+            </a>
           </div>
         </section>
       </div>

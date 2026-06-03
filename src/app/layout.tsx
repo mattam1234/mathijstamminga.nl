@@ -15,7 +15,8 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Mathijs Stamminga",
-  description: "Personal site and active projects of Mathijs Stamminga.",
+  description:
+    "Personal site of Mathijs Stamminga with a live overview of public GitHub projects.",
 };
 
 export default function RootLayout({
