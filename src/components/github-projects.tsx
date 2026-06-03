@@ -25,15 +25,15 @@ const EXCLUDED_REPOS = new Set(["mattam1234", "mathijstamminga.nl"]);
 function formatRelativeDate(dateString: string) {
   const now = Date.now();
   const date = new Date(dateString).getTime();
-  const diffInDays = Math.round((date - now) / (1000 * 60 * 60 * 24));
+  const signedDiffInDays = Math.round((date - now) / (1000 * 60 * 60 * 24));
   const formatter = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
-  if (Math.abs(diffInDays) < 30) {
-    return formatter.format(diffInDays, "day");
+  if (Math.abs(signedDiffInDays) < 30) {
+    return formatter.format(signedDiffInDays, "day");
   }
 
-  const diffInMonths = Math.round(diffInDays / 30);
-  return formatter.format(diffInMonths, "month");
+  const signedDiffInMonths = Math.round(signedDiffInDays / 30);
+  return formatter.format(signedDiffInMonths, "month");
 }
 
 function getTopProjects(repos: GitHubRepo[]) {
@@ -43,8 +43,8 @@ function getTopProjects(repos: GitHubRepo[]) {
         !repo.fork && !repo.archived && !EXCLUDED_REPOS.has(repo.name),
     )
     .sort(
-      (first, second) =>
-        new Date(second.pushed_at).getTime() - new Date(first.pushed_at).getTime(),
+      (repoA, repoB) =>
+        new Date(repoB.pushed_at).getTime() - new Date(repoA.pushed_at).getTime(),
     )
     .slice(0, 6);
 }
