@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 type GitHubRepo = {
   id: number;
@@ -71,19 +71,23 @@ export function GithubProjects() {
 
     async function loadRepos() {
       try {
-        const cachedRepos = window.localStorage.getItem(CACHE_KEY);
+        try {
+          const cachedRepos = window.localStorage.getItem(CACHE_KEY);
 
-        if (cachedRepos) {
-          const parsedCache = JSON.parse(cachedRepos) as {
-            expiresAt: number;
-            repos: GitHubRepo[];
-          };
+          if (cachedRepos) {
+            const parsedCache = JSON.parse(cachedRepos) as {
+              expiresAt: number;
+              repos: GitHubRepo[];
+            };
 
-          if (parsedCache.expiresAt > Date.now()) {
-            setRepos(parsedCache.repos);
-            setStatus("ready");
-            return;
+            if (parsedCache.expiresAt > Date.now()) {
+              setRepos(parsedCache.repos);
+              setStatus("ready");
+              return;
+            }
           }
+        } catch (storageError) {
+          console.warn("GitHub project cache is unavailable:", storageError);
         }
 
         const response = await fetch(GITHUB_REPOS_URL, {
@@ -100,13 +104,17 @@ export function GithubProjects() {
         const data = (await response.json()) as GitHubRepo[];
         const topProjects = getTopProjects(data);
 
-        window.localStorage.setItem(
-          CACHE_KEY,
-          JSON.stringify({
-            expiresAt: Date.now() + CACHE_TTL_IN_MS,
-            repos: topProjects,
-          }),
-        );
+        try {
+          window.localStorage.setItem(
+            CACHE_KEY,
+            JSON.stringify({
+              expiresAt: Date.now() + CACHE_TTL_IN_MS,
+              repos: topProjects,
+            }),
+          );
+        } catch (storageError) {
+          console.warn("Unable to cache GitHub projects locally:", storageError);
+        }
 
         setRepos(topProjects);
         setStatus("ready");
@@ -115,7 +123,7 @@ export function GithubProjects() {
           return;
         }
 
-        console.error(error);
+        console.error("Failed to load GitHub repositories:", error);
         setStatus("error");
       }
     }
@@ -125,9 +133,8 @@ export function GithubProjects() {
     return () => controller.abort();
   }, []);
 
-  const languageCount = useMemo(() => {
-    return new Set(repos.map((repo) => repo.language).filter(Boolean)).size;
-  }, [repos]);
+  const languageCount = new Set(repos.map((repo) => repo.language).filter(Boolean))
+    .size;
 
   if (status === "loading") {
     return (
