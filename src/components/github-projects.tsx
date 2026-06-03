@@ -22,18 +22,12 @@ const GITHUB_USERNAME = "mattam1234";
 const GITHUB_REPOS_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`;
 const EXCLUDED_REPOS = new Set(["mattam1234", "mathijstamminga.nl"]);
 
-function formatRelativeDate(dateString: string) {
-  const now = Date.now();
-  const date = new Date(dateString).getTime();
-  const signedDiffInDays = Math.round((date - now) / (1000 * 60 * 60 * 24));
-  const formatter = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-
-  if (Math.abs(signedDiffInDays) < 30) {
-    return formatter.format(signedDiffInDays, "day");
-  }
-
-  const signedDiffInMonths = Math.round(signedDiffInDays / 30);
-  return formatter.format(signedDiffInMonths, "month");
+function formatDisplayDate(dateString: string) {
+  return new Intl.DateTimeFormat("en", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(dateString));
 }
 
 function getTopProjects(repos: GitHubRepo[]) {
@@ -171,7 +165,7 @@ export function GithubProjects() {
               Updated
             </p>
             <p className="mt-2 text-sm font-medium text-white">
-              {repos[0] ? formatRelativeDate(repos[0].pushed_at) : "—"}
+              {repos[0] ? formatDisplayDate(repos[0].pushed_at) : "—"}
             </p>
           </div>
         </div>
@@ -209,7 +203,7 @@ export function GithubProjects() {
                   </h3>
                 </div>
                 <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-slate-300">
-                  {formatRelativeDate(repo.pushed_at)}
+                  {formatDisplayDate(repo.pushed_at)}
                 </span>
               </div>
 
